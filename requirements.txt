@@ -1,0 +1,9 @@
+# Install torch and torchvision separately from the official selector so the
+# machine receives the correct CUDA or CPU build:
+# https://pytorch.org/get-started/locally/
+numpy
+pandas
+scikit-learn
+Pillow
+matplotlib
+jupyter

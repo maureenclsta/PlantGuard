@@ -1,0 +1,591 @@
+PLANTGUARD AI PROJECT DOCUMENTATION Deep Learning Final Project
+
+============================================================ 1. PROJECT
+OVERVIEW ============================================================
+
+Project Name: PlantGuard AI
+
+Proposed Title: Real-World Plant Disease Classification Using Transfer
+Learning and Explainable AI
+
+Project Theme: Image Classification / Computer Vision
+
+Project Type: Deep Learning application with a working prototype using
+FastAPI.
+
+Project Summary: PlantGuard AI is an application that helps users
+identify plant species and detect visible plant diseases from leaf
+images. Users upload a plant/leaf image, and a trained deep learning
+model analyzes the image and returns the predicted class, confidence
+score, and a Grad-CAM visualization showing image regions that
+influenced the prediction.
+
+The final prediction classes must follow the actual labels available in
+the selected dataset. The project must not claim to recognize plant
+species or diseases that are not represented in the dataset.
+
+Main workflow: User uploads image -> Image preprocessing -> Trained deep
+learning model -> Plant/disease class prediction -> Confidence score ->
+Grad-CAM visualization -> Result displayed in the application
+
+Important note: Grad-CAM explains which image regions influenced the
+model prediction. It does not prove that the highlighted region is
+medically or biologically the exact infected tissue.
+
+============================================================ 2. PROBLEM
+BACKGROUND AND OBJECTIVES
+============================================================
+
+Problem: Identifying plant diseases from visual symptoms can be
+difficult for farmers and plant owners. Different diseases may have
+similar visual symptoms, and image conditions such as lighting,
+background, and weather can affect the appearance of leaves.
+
+Proposed solution: Provide an image-based classification prototype that
+predicts a plant/disease class from an uploaded image and communicates
+the model’s confidence and visual explanation.
+
+Objectives: 1. Build an image classification system using deep learning.
+2. Use pretrained CNN models and transfer learning. 3. Prepare and
+analyze a DOI-backed image dataset. 4. Compare model performance through
+controlled experiments. 5. Evaluate model performance using suitable
+classification metrics. 6. Explain predictions using Grad-CAM. 7. Deploy
+inference through a FastAPI backend and a simple frontend. 8. Test model
+robustness under selected image variations.
+
+Target users: - Farmers and plantation workers. - Plant owners and
+gardening communities. - Users who need preliminary visual information
+about plant leaf conditions.
+
+The application is an academic prototype, not a replacement for expert
+agricultural diagnosis.
+
+============================================================ 3. DATASET
+============================================================
+
+Selected dataset: Plant Species and Disease Detection using Deep
+Learning on Plant Images Captured in Realistic Natural Field Conditions
+
+Dataset repository: https://data.mendeley.com/datasets/bsr2vzhrzr/2
+
+DOI: 10.17632/bsr2vzhrzr.2
+
+Version: Version 2
+
+Reported dataset information: - Total images: 9,469 - Plant species: 4 -
+Plant species listed: Grapes, Groundnut, Guava, and Soybean - Original
+dataset size: approximately 48 GB - Resized dataset size: approximately
+5.04 GB - Reported image resolution: 2000 x 1126 - License: CC BY 4.0
+
+Dataset source: Mendeley Data.
+
+IMPORTANT DATASET VALIDATION TASK: Before finalizing the model design,
+the team must download and inspect the actual dataset files and
+documentation. Confirm: - The exact folder and file structure. - The
+exact class names. - Whether each image has a disease label,
+plant-species label, or both. - The number of images in every class. -
+Whether healthy and diseased classes are present for each species. -
+Whether metadata identifies capture sessions, plants, or image groups. -
+Whether there are corrupted, duplicate, or unreadable images.
+
+Do not assume the dataset contains a particular disease class until its
+labels have been inspected. The final model output and project title
+must match the labels actually provided.
+
+Dataset preparation: 1. Inspect the dataset and documentation. 2. Create
+a class distribution report. 3. Check corrupted and unreadable files. 4.
+Check duplicates where feasible. 5. Confirm image-label consistency. 6.
+Split data into training, validation, and test sets. 7. Avoid data
+leakage. If images belong to the same plant, capture session, or source
+group, keep related images in the same split when the metadata permits.
+8. Resize images to the input size required by each pretrained model. 9.
+Apply normalization compatible with the selected pretrained weights. 10.
+Apply augmentation to training images only.
+
+Potential augmentation: - Random horizontal/vertical flip when
+appropriate. - Small rotations. - Random crop or scale. - Brightness and
+contrast variation. - Mild color variation.
+
+The augmentation strategy must preserve the meaningful plant symptoms
+and must not create unrealistic training examples.
+
+============================================================ 4. AI
+MODELS AND TRANSFER LEARNING
+============================================================
+
+Planned models: 1. Custom CNN baseline trained from scratch. 2.
+MobileNetV2 pretrained on ImageNet. 3. ResNet50 pretrained on ImageNet.
+4. EfficientNet-B0 pretrained on ImageNet (optional, depending on time
+and compute).
+
+Transfer learning process: 1. Load pretrained ImageNet weights. 2.
+Replace the original classification head with a new output layer
+matching the dataset classes. 3. Initially freeze some or all
+feature-extraction layers. 4. Train the new classification head. 5.
+Fine-tune selected layers if appropriate. 6. Evaluate on validation and
+test data. 7. Save the best model and its class mapping.
+
+Model input: A preprocessed RGB image with the input dimensions required
+by the selected architecture. A common starting point is 224 x 224,
+subject to the model’s recommended preprocessing.
+
+Model output: - Predicted class. - Confidence score. - Optional top-k
+predictions, if useful.
+
+The final output format depends on the verified dataset labels. If
+labels combine plant species and disease (for example, a species_disease
+class), the model may predict one combined class. If the dataset
+provides separate labels, the team may consider separate prediction
+heads, but only if the dataset structure supports this.
+
+============================================================ 5.
+EXPERIMENTAL DESIGN
+============================================================
+
+The project should demonstrate structured experimentation rather than
+only training several models once.
+
+Suggested experiments:
+
+Experiment 1 - Baseline: - Train a simple CNN from scratch. - Record
+training and validation performance. - Use this as a baseline for
+comparison.
+
+Experiment 2 - Transfer learning: - Train MobileNetV2 using pretrained
+ImageNet weights. - Compare its performance with the baseline CNN.
+
+Experiment 3 - Architecture comparison: - Train/evaluate ResNet50. -
+Optionally train/evaluate EfficientNet-B0 if resources and schedule
+allow. - Keep the data split and evaluation procedure consistent.
+
+Experiment 4 - Augmentation comparison: - Compare training with
+augmentation and without augmentation. - Keep other settings as
+consistent as possible.
+
+Experiment 5 - Robustness test: - Test selected image variations such as
+lower brightness and mild blur. - Compare performance against the
+original test images. - Clearly state that these are controlled
+robustness tests, not a complete field validation.
+
+For fair comparison: - Use the same train/validation/test split. - Use
+the same class mapping. - Document image size and normalization. -
+Record optimizer, learning rate, batch size, epochs, and fine-tuning
+strategy. - Select the final model based on validation results, then
+report final test performance only after model selection. - Do not tune
+repeatedly on the test set.
+
+Metrics: - Accuracy. - Precision. - Recall. - Macro F1-score. -
+Confusion matrix. - Training time. - Inference time. - Model size.
+
+Macro F1 is useful when class counts are imbalanced because it gives
+equal weight to each class. Include per-class metrics where possible.
+
+Analysis: - Identify classes that are frequently confused. - Explain
+possible reasons for errors. - Discuss overfitting or underfitting using
+training/validation curves. - Discuss the trade-off between model
+performance, model size, and inference speed.
+
+============================================================ 6. GRAD-CAM
+/ EXPLAINABLE AI
+============================================================
+
+Purpose: Grad-CAM provides a visual explanation of image regions that
+contributed to a selected model prediction.
+
+Proposed display: - Original uploaded image. - Grad-CAM heatmap. -
+Optional overlay of the heatmap on the original image. - Predicted class
+and confidence.
+
+Interpretation: The heatmap is an explanation of model
+attention/activation for the prediction. It must not be described as a
+precise disease segmentation mask or definitive localization of infected
+tissue.
+
+============================================================ 7.
+APPLICATION FEATURES
+============================================================
+
+Core features: 1. Image upload. 2. Image preview. 3. Plant/disease class
+prediction based on dataset labels. 4. Confidence score. 5.
+Healthy/diseased status only if supported by the dataset labels. 6.
+Grad-CAM visualization. 7. Low-confidence warning. 8. Clear error
+message for invalid file types or unreadable images.
+
+Low-confidence handling: Choose a confidence threshold using validation
+data. If the top prediction is below the selected threshold, display a
+message such as: “Unable to confidently identify this image. Please
+upload a clearer image.”
+
+Do not choose an arbitrary threshold without documenting the reason.
+
+Suggested user interface: - Project name and short description. - Upload
+area. - Analyze button. - Original image preview. - Predicted
+plant/disease class. - Confidence score. - Status, if supported by
+labels. - Grad-CAM result. - Short disclaimer that the result is an AI
+prediction and not expert diagnosis.
+
+============================================================ 8. SYSTEM
+ARCHITECTURE AND FASTAPI
+============================================================
+
+Proposed architecture:
+
+Frontend -> User uploads image -> Sends request to FastAPI
+
+FastAPI backend -> Validates uploaded file -> Preprocesses image using
+the same inference preprocessing as training -> Loads the selected best
+model -> Runs prediction -> Generates Grad-CAM visualization -> Returns
+prediction and visualization information
+
+Frontend -> Displays prediction, confidence, and Grad-CAM
+
+Suggested API: POST /predict - Accepts an image file. - Returns
+predicted class, confidence, status if supported, and Grad-CAM output or
+image URL/base64 representation.
+
+Optional endpoints: GET /health - Returns API health status.
+
+GET /classes - Returns the supported class names.
+
+Example response structure (illustrative only; replace placeholder
+values with actual model output): { “predicted_class”:
+“CLASS_FROM_DATASET”, “confidence”: 0.952, “status”: “Diseased”,
+“gradcam_available”: true }
+
+The API must use the exact same class-index mapping and preprocessing
+configuration as the trained model.
+
+============================================================ 9.
+RECOMMENDED TECHNOLOGY STACK
+============================================================
+
+AI / Deep Learning: - Python - PyTorch or TensorFlow/Keras (choose one
+framework and use it consistently) - torchvision or equivalent
+pretrained model library - scikit-learn for metrics and evaluation -
+OpenCV / Pillow for image handling - Grad-CAM implementation compatible
+with the chosen framework
+
+Backend: - FastAPI - Uvicorn - Pydantic
+
+Frontend: - Streamlit or a simple web frontend. - Choose one frontend
+approach early to avoid unnecessary work.
+
+Experiment tracking and visualization: - Matplotlib - Seaborn (for
+analysis only, if desired) - TensorBoard or CSV experiment logs
+
+Development: - Git and GitHub - Shared project repository -
+requirements.txt - README.md
+
+============================================================ 10. TEAM
+MEMBERS AND TASK DISTRIBUTION
+============================================================
+
+Team: Person 1: Maureen Person 2: Alicia Person 3: Disca
+
+The distribution below gives each member a technical workstream. All
+members must contribute to testing, documentation, GitHub, presentation,
+and understanding the full system.
+
+  -------------------------------------------------------------
+  PERSON 1 - MAUREEN
+  Dataset, Baseline AI, Augmentation Experiment, and Frontend
+  -------------------------------------------------------------
+
+Main responsibilities: 1. Inspect dataset structure and documentation.
+2. Verify class labels and image counts. 3. Perform exploratory data
+analysis and class distribution analysis. 4. Check corrupted images and
+duplicates where feasible. 5. Prepare train/validation/test split and
+prevent data leakage. 6. Implement image preprocessing and training
+augmentation. 7. Build a simple CNN baseline from scratch. 8. Run
+augmentation vs no-augmentation experiment. 9. Record baseline metrics
+and training curves. 10. Build the frontend: - Image upload. - Image
+preview. - Analyze button. - Prediction result layout. - Confidence
+display. 11. Connect frontend display to the FastAPI response with
+support from Disca. 12. Document dataset and baseline experiment
+results.
+
+Expected deliverables: - Dataset inspection and EDA notebook/report. -
+Prepared data split and class mapping. - Baseline CNN code and saved
+weights. - Augmentation experiment results. - Frontend code. - Dataset
+and baseline section for the report.
+
+  -------------------------------------------------------------
+  PERSON 2 - ALICIA
+  Transfer Learning Models, Fine-tuning, and Model Evaluation
+  -------------------------------------------------------------
+
+Main responsibilities: 1. Implement MobileNetV2 with pretrained ImageNet
+weights. 2. Implement ResNet50 with pretrained ImageNet weights. 3.
+Implement EfficientNet-B0 if time and compute resources allow. 4.
+Replace classification heads to match verified dataset classes. 5.
+Conduct feature extraction and fine-tuning experiments. 6. Tune selected
+hyperparameters and record configurations. 7. Compare pretrained models
+against the baseline CNN. 8. Calculate accuracy, precision, recall,
+macro F1, and confusion matrices. 9. Record training time, inference
+time, and model size. 10. Analyze class-level errors and model
+limitations. 11. Select the best model using validation results. 12.
+Provide the final model artifact, class mapping, and inference
+configuration to Disca. 13. Document model methodology and evaluation
+results.
+
+Expected deliverables: - Transfer learning training scripts/notebooks. -
+Trained model checkpoints. - Experiment configuration and logs. - Model
+comparison tables and confusion matrices. - Best model and class
+mapping. - Model training/evaluation section for the report.
+
+  -----------------------------------------------------------------
+  PERSON 3 - DISCA
+  Grad-CAM, FastAPI Backend, Integration, and Application Testing
+  -----------------------------------------------------------------
+
+Main responsibilities: 1. Review the selected model architecture and its
+inference requirements. 2. Implement Grad-CAM for the selected best
+model. 3. Generate and validate Grad-CAM heatmaps and overlays. 4. Build
+the FastAPI backend. 5. Implement POST /predict. 6. Implement input
+validation and error handling. 7. Load the trained model and class
+mapping supplied by Alicia. 8. Ensure inference preprocessing matches
+training preprocessing. 9. Return predicted class, confidence, and
+Grad-CAM result. 10. Integrate the backend with Maureen’s frontend. 11.
+Test API and full end-to-end application flow. 12. Measure inference
+latency and identify integration issues. 13. Document backend, Grad-CAM,
+and application testing.
+
+Expected deliverables: - Grad-CAM implementation and sample outputs. -
+FastAPI application. - API endpoint and response schema. - Integrated
+working prototype. - API and end-to-end testing evidence. - Backend and
+explainability section for the report.
+
+  -------------------------
+  SHARED RESPONSIBILITIES
+  -------------------------
+
+All members: - Participate in project planning and weekly progress
+reviews. - Use GitHub branches/commits and meaningful commit messages. -
+Review and test each other’s work. - Understand the dataset, model,
+experiments, and application. - Contribute to debugging and final
+integration. - Write their assigned sections of the technical report. -
+Contribute to presentation slides and demo video. - Prepare for
+questions about the entire project.
+
+Documentation and presentation ownership: - Maureen: dataset, problem
+background, baseline, and frontend explanation. - Alicia: transfer
+learning, experiment design, model comparison, and metrics. - Disca:
+Grad-CAM, FastAPI, application architecture, and testing. - All members:
+conclusion, limitations, references, final review, and presentation
+rehearsal.
+
+Workload balancing note: The team should review actual workload after
+the dataset inspection and first training run. If one task becomes
+significantly heavier, redistribute implementation or testing work
+rather than leaving one member overloaded.
+
+============================================================ 11. GITHUB
+REPOSITORY STRUCTURE
+============================================================
+
+Suggested structure:
+
+PlantGuard-AI/ | |– README.md |– requirements.txt |– documentation.txt |
+|– dataset/ | |– README_dataset.md | |– class_distribution.csv | (Do not
+upload large dataset files unless permitted.) | |– notebooks/ | |–
+01_dataset_eda.ipynb | |– 02_preprocessing.ipynb | |–
+03_baseline_cnn.ipynb | |– 04_mobilenetv2.ipynb | |– 05_resnet50.ipynb |
+|– 06_evaluation.ipynb | |– 07_robustness_test.ipynb | |– models/ | |–
+best_model/ | |– class_mapping.json | |– preprocessing_config.json | |–
+backend/ | |– main.py | |– inference.py | |– gradcam.py | |– schemas.py
+| |– frontend/ | |– app.py | |– results/ | |– figures/ | |–
+confusion_matrices/ | |– experiment_results.csv | |– report/ | |–
+final_report.pdf | |– presentation.pptx | |– demo_video.mp4 | |– tests/
+|– test_api.py |– test_inference.py
+
+Repository notes: - Do not commit private credentials, tokens, or
+secrets. - Do not commit the full dataset if its size or license makes
+that inappropriate. - Document how to obtain the dataset and reproduce
+preprocessing. - Keep model files in GitHub only if repository limits
+and course rules permit; otherwise use an approved external storage
+link. - Include setup and run instructions in README.md.
+
+============================================================ 12. PROJECT
+TIMELINE ============================================================
+
+Suggested five-week plan. Adjust dates according to the actual course
+deadline.
+
+WEEK 1 - Dataset and project setup Maureen: - Dataset inspection, EDA,
+class distribution, split, preprocessing. - Initial frontend wireframe.
+
+Alicia: - Review pretrained architectures. - Set up baseline and
+transfer learning training pipeline.
+
+Disca: - Set up FastAPI project structure. - Review model inference and
+Grad-CAM implementation options.
+
+All: - Create GitHub repository. - Confirm dataset DOI, license,
+classes, and project scope.
+
+WEEK 2 - Model development Maureen: - Train baseline CNN. - Run
+augmentation comparison.
+
+Alicia: - Train MobileNetV2 and ResNet50. - Start fine-tuning and log
+experiments.
+
+Disca: - Implement initial Grad-CAM using a test model. - Build API
+skeleton and input validation.
+
+WEEK 3 - Experiments and evaluation Maureen: - Finalize baseline and
+frontend upload/result components.
+
+Alicia: - Complete model comparison and evaluation. - Select candidate
+best model based on validation performance.
+
+Disca: - Integrate candidate model. - Complete prediction endpoint and
+Grad-CAM output.
+
+All: - Review results and identify model errors.
+
+WEEK 4 - Integration and testing Maureen: - Connect frontend to API and
+refine result display.
+
+Alicia: - Finalize model artifact, class mapping, preprocessing
+configuration, and inference test.
+
+Disca: - Complete backend integration and end-to-end testing.
+
+All: - Run robustness tests. - Fix bugs and verify reproducibility.
+
+WEEK 5 - Final deliverables All: - Final application test. - Complete
+report PDF (maximum 10 pages, subject to course instructions). -
+Complete presentation (maximum 10 slides and 10 minutes, subject to
+course instructions). - Record demo video (maximum 1 minute). - Review
+GitHub repository and README. - Rehearse presentation and Q&A.
+
+============================================================ 13. DEMO
+VIDEO AND PRESENTATION PLAN
+============================================================
+
+Suggested one-minute demo: 0-10 seconds: - Introduce the problem and
+PlantGuard AI.
+
+10-20 seconds: - Upload a sample leaf image.
+
+20-35 seconds: - Show predicted class and confidence.
+
+35-48 seconds: - Show Grad-CAM visualization.
+
+48-60 seconds: - Briefly show the application workflow and explain its
+purpose.
+
+Use a real model prediction from the final application. Do not use
+fabricated accuracy or confidence values.
+
+Suggested 10-slide presentation: 1. Project title and team members. 2.
+Problem background and motivation. 3. Objectives and proposed solution.
+4. Dataset, DOI, class distribution, and sample images. 5. Preprocessing
+and experimental design. 6. CNN baseline and pretrained architectures.
+7. Experimental results and model comparison. 8. Confusion matrix, error
+analysis, and robustness. 9. FastAPI application, Grad-CAM, and demo.
+10. Conclusion, limitations, and future work.
+
+Follow the lecturer’s official slide/report structure if it differs from
+this suggestion.
+
+============================================================ 14. REPORT
+OUTLINE (MAXIMUM 10 PAGES)
+============================================================
+
+Suggested report structure: 1. Title, abstract, and keywords. 2.
+Introduction and problem background. 3. Dataset and exploratory
+analysis. 4. Preprocessing and methodology. 5. Model architectures and
+experimental setup. 6. Results and model comparison. 7. Error analysis
+and robustness testing. 8. Application implementation and Grad-CAM. 9.
+Conclusion and limitations. 10. References.
+
+Adjust page allocation to the lecturer’s required format. Keep figures
+and tables readable.
+
+============================================================ 15. RISKS,
+LIMITATIONS, AND MITIGATION
+============================================================
+
+Risk 1: Dataset labels do not support the intended disease classes.
+Mitigation: Inspect the actual files and documentation before fixing the
+final classification scope.
+
+Risk 2: Dataset is very large. Mitigation: Use the resized version if it
+is officially provided and suitable. Use efficient data loading, resize
+to model input size, and avoid unnecessary duplicate copies.
+
+Risk 3: Class imbalance. Mitigation: Inspect class counts. Consider
+class weights or a suitable sampling strategy. Report macro F1 and
+per-class metrics.
+
+Risk 4: Data leakage. Mitigation: Use metadata/group information to keep
+related images in one split where possible. Document the split strategy.
+
+Risk 5: Model overfitting. Mitigation: Use validation monitoring,
+augmentation, regularization, and appropriate fine-tuning.
+
+Risk 6: Poor real-world generalization. Mitigation: Run brightness/blur
+robustness tests and discuss the limits of the dataset. Do not claim the
+model works for all plants or field conditions.
+
+Risk 7: Grad-CAM misleading interpretation. Mitigation: Describe it as a
+visual explanation of model activations, not precise disease
+localization.
+
+Risk 8: Integration problems. Mitigation: Freeze the inference interface
+and class mapping early. Test the API with a dummy model before the
+final model is ready.
+
+============================================================ 16. FINAL
+CHECKLIST ============================================================
+
+DATASET [ ] Dataset downloaded and accessible. [ ] DOI and license
+recorded. [ ] Actual class labels verified. [ ] Class distribution
+calculated. [ ] Corrupt/duplicate image checks completed where feasible.
+[ ] Train/validation/test split documented. [ ] Data leakage risk
+considered.
+
+AI AND EXPERIMENTS [ ] CNN baseline trained. [ ] Pretrained model(s)
+trained. [ ] Fine-tuning strategy documented. [ ] Augmentation
+experiment completed. [ ] Metrics calculated. [ ] Confusion matrix
+generated. [ ] Training curves reviewed. [ ] Error analysis completed. [
+] Robustness test completed. [ ] Best model selected using validation
+data.
+
+APPLICATION [ ] FastAPI backend runs. [ ] Image upload works. [ ]
+Prediction endpoint works. [ ] Confidence is displayed. [ ] Grad-CAM
+visualization works. [ ] Low-confidence warning works. [ ] Frontend and
+backend integrated. [ ] End-to-end test completed.
+
+DELIVERABLES [ ] One GitHub repository. [ ] README and requirements
+file. [ ] Technical report PDF within page limit. [ ] Presentation
+within slide/time limits. [ ] Demo video within one-minute limit. [ ]
+Project management and task contributions documented. [ ] All team
+members can explain the project.
+
+============================================================ 17.
+REFERENCES AND IMPORTANT LINKS
+============================================================
+
+Dataset: https://data.mendeley.com/datasets/bsr2vzhrzr/2
+
+Dataset DOI: https://doi.org/10.17632/bsr2vzhrzr.2
+
+Mendeley Data: https://data.mendeley.com/
+
+Pretrained model documentation: PyTorch Torchvision:
+https://pytorch.org/vision/stable/models.html
+
+FastAPI: https://fastapi.tiangolo.com/
+
+Grad-CAM reference: Selvaraju et al., “Grad-CAM: Visual Explanations
+from Deep Networks via Gradient-based Localization.”
+https://arxiv.org/abs/1610.02391
+
+Note: Add the dataset’s related research article and any additional
+sources actually used in the final report. Verify complete bibliographic
+details before submission.
+
+============================================================ END OF
+DOCUMENT ============================================================
