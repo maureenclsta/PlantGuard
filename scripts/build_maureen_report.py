@@ -82,7 +82,7 @@ def build_sections() -> list[tuple[str, str]]:
     baseline = section("04", "Baseline CNN", "The five-epoch no-augmentation CNN achieved 0.4918 test macro F1 after validation-only model selection; the short run was still improving at its final epoch.", baseline_body)
     augmentation = section(
         "05", "Augmentation experiment", "With one seed and five epochs, validation macro F1 was lower in the augmented run; this is a preliminary single-run observation, not a general conclusion.",
-        notes + "\nThe results table and plot use validation metrics for both runs. The held-out test set was used once for the validation-selected no-augmentation checkpoint only; no test score is reported for the augmented run."
+        notes.rstrip() + "\n\nThe results table and plot use validation metrics for both runs. The held-out test set was used once for the validation-selected no-augmentation checkpoint only; no test score is reported for the augmented run.\n\n"
         + figure("../results/figures/augmentation_comparison.png", "Validation macro F1 and loss for the augmentation comparison")
     )
     threshold = json.loads((ROOT / "frontend/confidence_config.json").read_text(encoding="utf-8"))

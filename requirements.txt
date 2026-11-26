@@ -10,3 +10,4 @@ jupyter
 streamlit
 requests
 mistune
+reportlab

@@ -26,10 +26,11 @@
 
 ## PDF export
 
-Pandoc and a LaTeX PDF engine were not available in the build environment. After installing Pandoc and MiKTeX (with XeLaTeX), run from the repository root:
+Build the self-contained HTML and PDF from the repository root:
 
 ```bat
-pandoc report\maureen_sections.md -o report\maureen_sections.pdf --pdf-engine=xelatex --resource-path=.;report;results
+python scripts\build_maureen_report.py
+python scripts\export_maureen_pdf.py
 ```
 
 ## Remaining Maureen-specific gaps

@@ -207,7 +207,9 @@ The observed validation difference (augmentation minus no augmentation) was -0.1
 
 Test-set evaluation was performed once, after choosing the no-augmentation checkpoint by validation macro F1. Its metrics are recorded separately in `results/test_evaluation/metrics.json`; they are not a second augmentation comparison because the augmented model was not selected for test evaluation.
 
-The results table and plot use validation metrics for both runs. The held-out test set was used once for the validation-selected no-augmentation checkpoint only; no test score is reported for the augmented run.![Validation macro F1 and loss for the augmentation comparison](../results/figures/augmentation_comparison.png)
+The results table and plot use validation metrics for both runs. The held-out test set was used once for the validation-selected no-augmentation checkpoint only; no test score is reported for the augmented run.
+
+![Validation macro F1 and loss for the augmentation comparison](../results/figures/augmentation_comparison.png)
 
 *Figure: Validation macro F1 and loss for the augmentation comparison. Source file: `../results/figures/augmentation_comparison.png`.*
 

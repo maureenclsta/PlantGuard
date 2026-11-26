@@ -90,6 +90,7 @@ Build Maureen's report sections and self-contained HTML from the saved results:
 
 ```bat
 python scripts\build_maureen_report.py
+python scripts\export_maureen_pdf.py
 ```
 
-The generated files are in `report/`. The HTML embeds its figures and includes print CSS. A PDF engine is not bundled; see the handoff note for the local Pandoc command.
+The generated files are in `report/`. The HTML embeds its figures and includes print CSS; ReportLab exports the same Markdown and figures to PDF.
