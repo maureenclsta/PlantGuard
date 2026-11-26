@@ -31,7 +31,7 @@ Evidence is recorded from the repository artifacts. Items belonging to Alicia, D
 - [x] Image upload, preview, Analyze, result, confidence, error states implemented: `frontend/app.py`.
 - [ ] Real prediction endpoint integration verified: pending Disca's backend.
 - [ ] Real Grad-CAM integration verified: pending Disca's backend.
-- [ ] Validation-derived low-confidence threshold: script is ready at `scripts/propose_confidence_threshold.py`; awaiting a run on the checkpoint laptop.
+- [x] Validation-derived low-confidence threshold proposed: `frontend/confidence_config.json`, `results/validation_confidence_analysis.csv`, and `results/figures/validation_confidence_threshold.png`.
 - [ ] End-to-end test completed: pending backend integration.
 
 ## Deliverables and shared work

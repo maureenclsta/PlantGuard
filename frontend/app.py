@@ -96,7 +96,10 @@ if st.button("Analyze", type="primary", disabled=image is None):
         if isinstance(threshold, (int, float)) and response["confidence"] < threshold:
             st.warning("Unable to confidently identify this image. Please upload a clearer image.")
         elif threshold is None:
-            st.caption("Confidence warning threshold awaits validation-based calibration.")
+            if confidence_config.get("status") == "no_threshold_met_criteria":
+                st.info("Validation confidence analysis did not identify a reliable warning threshold.")
+            else:
+                st.caption("Confidence warning threshold awaits validation-based calibration.")
 
         gradcam = response.get("gradcam_image")
         if response.get("gradcam_available"):

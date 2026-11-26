@@ -1,16 +1,16 @@
 {
-  "threshold": null,
-  "status": "no_threshold_met_criteria",
+  "threshold": 0.32758501172065735,
+  "status": "proposed",
   "source": "validation_predictions.csv",
   "selected_run": "loq_no_aug",
-  "selection_rule": "lowest confidence cutoff with observed accepted accuracy >= target, minimum coverage, and minimum support",
-  "target_accuracy": 0.8,
+  "selection_rule": "confidence cutoff maximizing Youden's J for distinguishing correct from incorrect validation predictions, subject to minimum coverage and support",
   "minimum_coverage": 0.1,
   "minimum_support": 30,
   "validation_images": 1419,
-  "accepted_validation_images": null,
-  "validation_coverage": null,
-  "validation_accuracy_among_accepted": null,
+  "accepted_validation_images": 858,
+  "validation_coverage": 0.6046511627906976,
+  "validation_accuracy_among_accepted": 0.6282051282051282,
+  "youden_j": 0.24852307900680803,
   "warning_text": "Unable to confidently identify this image. Please upload a clearer image.",
-  "caveat": "A validation-derived threshold is a UI heuristic, not a calibrated probability or guarantee of correctness."
+  "caveat": "Validation-derived UI heuristic; not a calibrated probability or guarantee of correctness."
 }

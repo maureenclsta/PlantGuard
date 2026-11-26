@@ -12,7 +12,7 @@
 - `docs/api_contract.md`: frontend request and response contract for `POST /predict`.
 - `frontend/app.py`: Streamlit UI with configurable API URL and clearly labelled mock mode.
 - `src/plantguard/api_client.py`: defensive response parser.
-- `frontend/confidence_config.json`: threshold pending until the validation-only script is run on a machine with the selected checkpoint.
+- `frontend/confidence_config.json`: threshold proposed from the saved validation predictions; see the confidence caveat in the file and report.
 
 ## Report and result files
 
@@ -22,7 +22,7 @@
 - `results/loq_no_aug/` and `results/loq_aug/` contain five-epoch configs, training logs, summaries, and curves.
 - `results/augmentation_comparison.csv`, `results/figures/augmentation_comparison.png`, and `results/augmentation_notes.md` compare validation results.
 - `results/test_evaluation/` contains the one-time selected-model test metrics, class report, and confusion matrix.
-- Checkpoints are excluded from Git. The RTX 4050 laptop still needs to run `python scripts\propose_confidence_threshold.py` after syncing this repository. This is validation inference, not training.
+- Checkpoints are excluded from Git. Validation predictions, threshold analysis, and its figure were generated from the selected checkpoint on the RTX 4050 laptop; this was validation inference, not training.
 
 ## PDF export
 
@@ -34,7 +34,6 @@ pandoc report\maureen_sections.md -o report\maureen_sections.pdf --pdf-engine=xe
 
 ## Remaining Maureen-specific gaps
 
-- Generate the validation confidence threshold from the selected checkpoint and update `frontend/confidence_config.json`.
 - Obtain a real screenshot after integration with the backend.
 - Export and visually review the PDF on a machine with a PDF engine.
 - The test evaluator saved a confusion matrix PNG but not raw cell counts, so exact most-confused class pairs are not extracted.
