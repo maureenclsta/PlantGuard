@@ -1,5 +1,16 @@
 {
   "threshold": null,
-  "status": "pending_validation_predictions",
-  "warning_text": "Unable to confidently identify this image. Please upload a clearer image."
+  "status": "no_threshold_met_criteria",
+  "source": "validation_predictions.csv",
+  "selected_run": "loq_no_aug",
+  "selection_rule": "lowest confidence cutoff with observed accepted accuracy >= target, minimum coverage, and minimum support",
+  "target_accuracy": 0.8,
+  "minimum_coverage": 0.1,
+  "minimum_support": 30,
+  "validation_images": 1419,
+  "accepted_validation_images": null,
+  "validation_coverage": null,
+  "validation_accuracy_among_accepted": null,
+  "warning_text": "Unable to confidently identify this image. Please upload a clearer image.",
+  "caveat": "A validation-derived threshold is a UI heuristic, not a calibrated probability or guarantee of correctness."
 }
