@@ -1,0 +1,18 @@
+{
+  "selected_run": "loq_no_aug",
+  "selection_basis": "validation macro F1",
+  "validation_macro_f1": 0.48631442704987005,
+  "test_images": 1419,
+  "accuracy": 0.5264270613107822,
+  "macro_precision": 0.5102368305302046,
+  "macro_recall": 0.5807870721949809,
+  "macro_f1": 0.49178949883961426,
+  "test_model_forward_seconds": 3.624790399997437,
+  "model_forward_ms_per_image": 2.5544682170524573,
+  "test_pipeline_seconds_including_load_and_preprocessing": 27.191199800003233,
+  "pipeline_ms_per_image": 19.162226779424408,
+  "model_size_mb": 0.3172340393066406,
+  "parameter_count": 83161,
+  "device": "cuda",
+  "test_evaluated_once": true
+}
