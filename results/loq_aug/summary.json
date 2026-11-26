@@ -1,0 +1,10 @@
+{
+  "epochs_completed": 5,
+  "best_epoch": 5,
+  "best_val_macro_f1": 0.3525222310064326,
+  "training_seconds_including_validation": 808.8393639999995,
+  "mean_train_epoch_seconds": 134.54914704000112,
+  "mean_validation_epoch_seconds": 27.199549939999997,
+  "device": "cuda",
+  "test_set_evaluated": false
+}
