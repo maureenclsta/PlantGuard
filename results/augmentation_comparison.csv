@@ -1,0 +1,3 @@
+experiment,augmentation,seed,epochs_completed,best_epoch,best_validation_macro_f1,validation_accuracy_at_best_epoch,validation_loss_at_best_epoch,training_plus_validation_seconds,test_metrics
+loq_no_aug,off,42,5,5,0.48631442704987005,0.525722339675828,1.427265414811928,786.4538493,Not evaluated for this run; test used once for validation-selected run only
+loq_aug,on,42,5,5,0.3525222310064326,0.4023960535588443,1.6852838798170782,808.8393639999995,Not evaluated for this run; test used once for validation-selected run only

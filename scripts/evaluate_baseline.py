@@ -150,7 +150,7 @@ def main():
     experiment_csv = ROOT / "results/experiment_results.csv"
     fields = ["experiment_name", "model", "augmentation", "hyperparameters", "accuracy",
               "macro_precision", "macro_recall", "macro_f1", "training_time_seconds",
-              "inference_time_ms_per_image", "model_size_mb", "seed"]
+              "inference_time_ms_per_image", "model_size_mb", "seed", "evaluation_split"]
     exists = experiment_csv.exists()
     with experiment_csv.open("a", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=fields)
@@ -172,6 +172,7 @@ def main():
             "inference_time_ms_per_image": metrics["model_forward_ms_per_image"],
             "model_size_mb": model_size_mb,
             "seed": 42,
+            "evaluation_split": "test",
         })
     print(json.dumps(metrics, indent=2))
 
